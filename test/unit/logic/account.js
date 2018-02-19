@@ -74,7 +74,7 @@ describe('account', () => {
 		application.cleanup(done);
 	});
 
-	describe('Account constructor', () => {
+	describe('constructor', () => {
 		var library;
 		var dbStub;
 
@@ -99,7 +99,9 @@ describe('account', () => {
 		});
 
 		it('should attach schema to scope variable', () => {
-			return expect(accountLogic.scope.schema).to.eql(modulesLoader.scope.schema);
+			return expect(accountLogic.scope.schema).to.eql(
+				modulesLoader.scope.schema
+			);
 		});
 
 		it('should attach db to scope variable', () => {
@@ -122,7 +124,7 @@ describe('account', () => {
 	});
 
 	describe('objectNormalize', () => {
-		it('should be okay for a valid account object', () => {
+		it('should validate account schema', () => {
 			return expect(account.objectNormalize(validAccount)).to.be.an('object');
 		});
 	});
@@ -185,7 +187,7 @@ describe('account', () => {
 	});
 
 	describe('get', () => {
-		it('should only get requested fields for account', done => {
+		it('should only fetch requested fields for account', done => {
 			var requestedFields = ['username', 'isDelegate', 'address', 'publicKey'];
 
 			account.get(
@@ -200,7 +202,7 @@ describe('account', () => {
 			);
 		});
 
-		it('should get all fields if fields parameters is not set', done => {
+		it('should fetch all fields for undefined fields parameter', done => {
 			account.get({ address: validAccount.address }, (err, res) => {
 				expect(err).to.not.exist;
 				expect(Object.keys(res).sort()).to.eql(
@@ -218,7 +220,7 @@ describe('account', () => {
 			});
 		});
 
-		it('should get the correct account against address', done => {
+		it('should fetch the correct account against valid account address', done => {
 			account.get({ address: validAccount.address }, (err, res) => {
 				expect(err).to.not.exist;
 				expect(res).to.be.an('object');
@@ -240,9 +242,9 @@ describe('account', () => {
 		it('when voterBalance = totalSupply, it should return 100', () => {
 			var totalSupply = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 			var votersBalance = totalSupply;
-			return expect(account.calculateApproval(votersBalance, totalSupply)).to.equal(
-				100
-			);
+			return expect(
+				account.calculateApproval(votersBalance, totalSupply)
+			).to.equal(100);
 		});
 
 		it('when voterBalance = 50 and total supply = 100, it should return 50', () => {
@@ -604,6 +606,13 @@ describe('account', () => {
 			);
 		});
 
+		it('should throw error when a numeric field receives non numeric value', done => {
+			account.merge(validAccount.address, { balance: 'Not a Number' }, err => {
+				expect(err).to.equal('Encountered insane number: Not a Number');
+				done();
+			});
+		});
+
 		describe('verify public key', () => {
 			it('should throw error if parameter is not a string', () => {
 				return expect(() => {
@@ -662,13 +671,6 @@ describe('account', () => {
 						done();
 					}
 				);
-			});
-		});
-
-		it('should throw error when a numeric field receives non numeric value', done => {
-			account.merge(validAccount.address, { balance: 'Not a Number' }, err => {
-				expect(err).to.equal('Encountered insane number: Not a Number');
-				done();
 			});
 		});
 	});
