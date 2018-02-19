@@ -272,63 +272,6 @@ describe('account', () => {
 		});
 	});
 
-	describe('calculateApproval', () => {
-		it('when voterBalance = 0 and totalSupply = 0, it should return 0', () => {
-			return expect(account.calculateApproval(0, 0)).to.equal(0);
-		});
-
-		it('when voterBalance = totalSupply, it should return 100', () => {
-			var totalSupply = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-			var votersBalance = totalSupply;
-			return expect(
-				account.calculateApproval(votersBalance, totalSupply)
-			).to.equal(100);
-		});
-
-		it('when voterBalance = 50 and total supply = 100, it should return 50', () => {
-			return expect(account.calculateApproval(50, 100)).to.equal(50);
-		});
-
-		it('with random values, it should return approval between 0 and 100', () => {
-			// So total supply is never 0
-			var totalSupply = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-			var votersBalance = Math.floor(Math.random() * totalSupply);
-			return expect(account.calculateApproval(votersBalance, totalSupply))
-				.to.be.least(0)
-				.and.be.at.most(100);
-		});
-	});
-
-	describe('calculateProductivity', () => {
-		it('when missedBlocks = 0 and producedBlocks = 0, it should return 0', () => {
-			return expect(account.calculateProductivity(0, 0)).to.equal(0);
-		});
-
-		it('when missedBlocks = producedBlocks, it should return 50', () => {
-			var producedBlocks = Math.floor(Math.random() * 1000000000);
-			var missedBlocks = producedBlocks;
-			return expect(
-				account.calculateProductivity(producedBlocks, missedBlocks)
-			).to.equal(50);
-		});
-
-		it('when missedBlocks = 5 and producedBlocks = 15, it should return 75', () => {
-			var missedBlocks = 5;
-			var producedBlocks = 15;
-			return expect(
-				account.calculateProductivity(producedBlocks, missedBlocks)
-			).to.equal(75);
-		});
-
-		it('with random values, it should return approval between 0 and 100', () => {
-			var missedBlocks = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-			var producedBlocks = Math.floor(Math.random() * missedBlocks);
-			return expect(account.calculateProductivity(producedBlocks, missedBlocks))
-				.to.be.least(0)
-				.and.be.at.most(100);
-		});
-	});
-
 	describe('getAll', () => {
 		var allAccounts;
 
@@ -594,6 +537,63 @@ describe('account', () => {
 					done();
 				});
 			});
+		});
+	});
+
+	describe('calculateApproval', () => {
+		it('when voterBalance = 0 and totalSupply = 0, it should return 0', () => {
+			return expect(account.calculateApproval(0, 0)).to.equal(0);
+		});
+
+		it('when voterBalance = totalSupply, it should return 100', () => {
+			var totalSupply = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+			var votersBalance = totalSupply;
+			return expect(
+				account.calculateApproval(votersBalance, totalSupply)
+			).to.equal(100);
+		});
+
+		it('when voterBalance = 50 and total supply = 100, it should return 50', () => {
+			return expect(account.calculateApproval(50, 100)).to.equal(50);
+		});
+
+		it('with random values, it should return approval between 0 and 100', () => {
+			// So total supply is never 0
+			var totalSupply = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+			var votersBalance = Math.floor(Math.random() * totalSupply);
+			return expect(account.calculateApproval(votersBalance, totalSupply))
+				.to.be.least(0)
+				.and.be.at.most(100);
+		});
+	});
+
+	describe('calculateProductivity', () => {
+		it('when missedBlocks = 0 and producedBlocks = 0, it should return 0', () => {
+			return expect(account.calculateProductivity(0, 0)).to.equal(0);
+		});
+
+		it('when missedBlocks = producedBlocks, it should return 50', () => {
+			var producedBlocks = Math.floor(Math.random() * 1000000000);
+			var missedBlocks = producedBlocks;
+			return expect(
+				account.calculateProductivity(producedBlocks, missedBlocks)
+			).to.equal(50);
+		});
+
+		it('when missedBlocks = 5 and producedBlocks = 15, it should return 75', () => {
+			var missedBlocks = 5;
+			var producedBlocks = 15;
+			return expect(
+				account.calculateProductivity(producedBlocks, missedBlocks)
+			).to.equal(75);
+		});
+
+		it('with random values, it should return approval between 0 and 100', () => {
+			var missedBlocks = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+			var producedBlocks = Math.floor(Math.random() * missedBlocks);
+			return expect(account.calculateProductivity(producedBlocks, missedBlocks))
+				.to.be.least(0)
+				.and.be.at.most(100);
 		});
 	});
 
