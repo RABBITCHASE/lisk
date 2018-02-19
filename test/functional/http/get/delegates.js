@@ -255,6 +255,18 @@ describe('GET /delegates', () => {
 				});
 			});
 
+			it('using numeric string should be ok', () => {
+				return delegatesEndpoint.makeRequest(
+					{
+						search: accountFixtures.genesis.address.slice(
+							0,
+							accountFixtures.genesis.address.length - 1
+						),
+					},
+					200
+				);
+			});
+
 			it('using valid search with length=1 should be ok', () => {
 				return delegatesEndpoint.makeRequest({ search: 'g' }, 200);
 			});
